@@ -713,8 +713,7 @@ BEFORE and AFTER are forms to execute before/after calling the command."
     (define-key map (kbd "?") 'objed-show-top-level)
     ;; (define-key map (kbd "C-o") 'objed-open-line)
 
-    ;; TODO: switch with q, so quit window is qq?
-    (define-key map "g" 'objed-quit)
+    (define-key map (kbd "ESC") 'objed-quit)
     (define-key map "q" 'objed-quit-window-or-reformat)
     ;; TODO: support repeated invokation
     (define-key map (kbd "C-u") 'universal-argument)
