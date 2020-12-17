@@ -1450,7 +1450,7 @@ that any previous instance of this object is used."
         (or (frame-parameter nil 'cursor-color)
             (face-attribute 'cursor :background nil 'default)))
   (set-cursor-color objed-cursor-color)
-  (set cursor-type objed-cursor-type-active)
+  (setq cursor-type objed-cursor-type-active)
 
   ;; init object
   (prog1 (cond ((commandp sym)
