@@ -332,7 +332,13 @@ When regular commands are executed `objed' will exit its editing
 state. Commands added to this list wont do that."
   :type '(repeat function))
 
+(defcustom objed-cursor-type-inactive 'bar
+  "Cursor type to use when `objed' is inactive."
+  :type 'cursor)
 
+(defcustom objed-cursor-type-active 'hbar
+  "Cursor type to use when `objed' is active."
+  :type 'cursor)
 
 (defcustom objed-cursor-color "#e52b50"
   "Cursor color to use when `objed' is active."
@@ -540,9 +546,11 @@ interferring with `objed'."
          (minibuffer-setup-hook (remq 'objed--reset minibuffer-setup-hook))
          (objed--with-allow-input t))
      (set-cursor-color objed--saved-cursor)
+     (setq cursor-type objed-cursor-type-inactive)
      (unwind-protect (progn ,@body)
        ;; body might exit objed...
        (when objed--buffer
+         (setq cursor-type objed-cursor-type-active)
          (set-cursor-color objed-cursor-color)))))
 
 
@@ -1443,6 +1451,7 @@ that any previous instance of this object is used."
         (or (frame-parameter nil 'cursor-color)
             (face-attribute 'cursor :background nil 'default)))
   (set-cursor-color objed-cursor-color)
+  (set cursor-type objed-cursor-type-active)
 
   ;; init object
   (prog1 (cond ((commandp sym)
@@ -4021,6 +4030,7 @@ Reset and reinitilize objed if appropriate."
       (setq objed--electric-event nil)
 
       (when objed--saved-cursor
+        (setq cursor-type objed-cursor-type-inactive)
         (set-cursor-color objed--saved-cursor))
       (objed--reset--objed-buffer)
       (remove-hook 'post-command-hook 'objed--check-buffer)
